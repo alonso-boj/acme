@@ -1,10 +1,11 @@
-using Company.Store.API.Middlewares;
+using ACME.Store.Application.Validators;
+using ACME.Store.Domain.Middlewares;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Company.Store.API;
+namespace ACME.Store.Presentation;
 
 public static class Program
 {
@@ -18,7 +19,7 @@ public static class Program
 
         builder.Services.AddSwaggerGen();
 
-        builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(RegisterCustomerRequestValidator)));
 
         builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
 

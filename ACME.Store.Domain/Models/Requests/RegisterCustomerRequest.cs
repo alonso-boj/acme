@@ -1,3 +1,3 @@
-﻿namespace Company.Store.API.Models.Requests;
+﻿namespace ACME.Store.Domain.Models.Requests;
 
 public record RegisterCustomerRequest(string Name, int Age);

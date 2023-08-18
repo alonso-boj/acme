@@ -10,4 +10,8 @@
     <ProjectReference Include="..\ACME.Store.Domain\ACME.Store.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Company.Store.API.Controllers;
+namespace ACME.Store.Presentation.Controllers;
 
 public class StandardController : ControllerBase
 {

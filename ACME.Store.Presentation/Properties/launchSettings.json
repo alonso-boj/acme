@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "ACME.Store.Web": {
+    "ACME.Store.Presentation": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

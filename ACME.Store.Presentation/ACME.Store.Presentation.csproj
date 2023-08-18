@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <UserSecretsId>65154807-7113-4b5b-9677-82cb6dba75cb</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\ACME.Store.Docker.Compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>

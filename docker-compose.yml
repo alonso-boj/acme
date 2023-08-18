@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  acme.store.presentation:
+    image: ${DOCKER_REGISTRY-}acmestorepresentation
+    build:
+      context: .
+      dockerfile: ACME.Store.Presentation/Dockerfile

@@ -1,21 +1,21 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Company.Store.API.Middlewares;
+namespace ACME.Store.Domain.Middlewares;
 
 public class GlobalExceptionHandlingMiddleware : IMiddleware
 {
     private readonly ILogger<GlobalExceptionHandlingMiddleware> _logger;
 
-    private readonly IWebHostEnvironment _environment;
+    private readonly IHostingEnvironment _environment;
 
     public GlobalExceptionHandlingMiddleware(ILogger<GlobalExceptionHandlingMiddleware> logger,
-        IWebHostEnvironment environment)
+        IHostingEnvironment environment)
     {
         _logger = logger;
         _environment = environment;
@@ -48,7 +48,11 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
                 problemDetails.Extensions.Add("stackTrace", ex.StackTrace);
             }
 
-            await context.Response.WriteAsJsonAsync(problemDetails);
+            string json = JsonSerializer.Serialize(problemDetails);
+
+            context.Response.ContentType = "application/json";
+
+            await context.Response.WriteAsync(json);
         }
     }
 }

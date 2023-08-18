@@ -1,10 +1,10 @@
-﻿using Company.Store.API.Models.Requests;
+﻿using ACME.Store.Domain.Models.Requests;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace Company.Store.API.Controllers;
+namespace ACME.Store.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
