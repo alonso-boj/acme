@@ -9,7 +9,7 @@ public sealed class Customer : BaseEntity
 
     }
 
-    public Customer(string name, int phone, string mail)
+    public Customer(string name, string phone, string mail)
     {
         Name = name;
         Phone = phone;
@@ -18,7 +18,7 @@ public sealed class Customer : BaseEntity
 
     public string Name { get; private set; } = string.Empty;
 
-    public int Phone { get; private set; }
+    public string Phone { get; private set; } = string.Empty;
 
     public string Mail { get; private set; } = string.Empty;
 

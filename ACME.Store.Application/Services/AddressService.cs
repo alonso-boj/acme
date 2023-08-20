@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACME.Store.Application;
+namespace ACME.Store.Application.Services;
 internal class AddressService
 {
 }

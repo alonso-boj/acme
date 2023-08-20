@@ -1,4 +1,4 @@
-﻿using ACME.Store.Application.Validators;
+﻿using ACME.Store.Application.Services;
 using ACME.Store.Domain.Interfaces.Services;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,8 +15,7 @@ public static class DependencyInjection
             cfg.AddMaps(Assembly.GetExecutingAssembly());
         });
 
-        services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(RegisterCustomerRequestDtoValidator)));
-
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         services.AddScoped<ICustomerService, CustomerService>();
 

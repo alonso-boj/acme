@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace ACME.Store.Domain.Dtos.Requests;
-public record RegisterCustomerAddressRequestDto(
+namespace ACME.Store.Domain.Models.Requests;
+public record RegisterCustomerAddressRequest(
     bool Main,
     string Street,
     int Number,

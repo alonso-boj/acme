@@ -1,9 +1,9 @@
-﻿using ACME.Store.Domain.Dtos.Requests;
+﻿using ACME.Store.Domain.Models.Requests;
 using System.Threading.Tasks;
 
 namespace ACME.Store.Domain.Interfaces.Services;
 
 public interface IAddressService
 {
-    Task<bool> RegisterCustomerAddressAsync(RegisterCustomerAddressRequestDto requestDto);
+    Task<bool> RegisterCustomerAddressAsync(RegisterCustomerAddressRequest requestDto);
 }

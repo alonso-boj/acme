@@ -1,7 +1,7 @@
 ﻿using ACME.Store.Domain.Middlewares;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ACME.Store.Application.Extensions;
+namespace ACME.Store.Domain.Extensions;
 
 public static class DependencyInjection
 {

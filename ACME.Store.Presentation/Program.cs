@@ -1,5 +1,7 @@
 using ACME.Store.Application.Extensions;
+using ACME.Store.Domain.Extensions;
 using ACME.Store.Domain.Middlewares;
+using ACME.Store.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,6 +20,8 @@ public static class Program
         builder.Services.AddSwaggerGen();
 
         builder.Services.AddDomainConfigurations();
+
+        builder.Services.AddInfrastructureConfigurations();
 
         builder.Services.AddApplicationConfigurations();
 
