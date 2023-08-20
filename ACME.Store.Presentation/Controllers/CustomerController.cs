@@ -1,4 +1,5 @@
-﻿using ACME.Store.Domain.Models.Requests;
+﻿using ACME.Store.Domain.Dtos.Requests;
+using ACME.Store.Domain.Interfaces.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,17 +11,21 @@ namespace ACME.Store.Presentation.Controllers;
 [Route("api/[controller]")]
 public class CustomerController : StandardController
 {
-    private readonly IValidator<RegisterCustomerRequest> _validator;
+    private readonly IValidator<RegisterCustomerRequestDto> _validator;
+    private readonly ICustomerService _customerService;
 
-    public CustomerController(IValidator<RegisterCustomerRequest> validator)
+    public CustomerController(
+        IValidator<RegisterCustomerRequestDto> validator,
+        ICustomerService customerService)
     {
         _validator = validator;
+        _customerService = customerService;
     }
 
     [HttpPost("register")]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> RegisterCustomerAsync([FromBody] RegisterCustomerRequest request)
+    public async Task<IActionResult> RegisterCustomerAsync([FromBody] RegisterCustomerRequestDto request)
     {
         var validationResult = await _validator.ValidateAsync(request);
 
@@ -30,6 +35,8 @@ public class CustomerController : StandardController
 
             return UnprocessableEntity(validationProblemDetails);
         }
+
+        await _customerService.RegisterCustomerAsync(request);
 
         return Ok();
     }
