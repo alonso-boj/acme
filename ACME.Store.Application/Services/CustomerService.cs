@@ -3,6 +3,7 @@ using ACME.Store.Domain.Interfaces.Repositories;
 using ACME.Store.Domain.Interfaces.Services;
 using ACME.Store.Domain.Models.Requests;
 using ACME.Store.Domain.Models.Responses;
+using Ardalis.Result;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -23,44 +24,44 @@ public class CustomerService : ICustomerService
         _customerRepository = customerRepository;
     }
 
-    public async Task<bool> RegisterCustomerAsync(RegisterCustomerRequest request)
+    public async Task<Result> RegisterCustomerAsync(RegisterCustomerRequest request)
     {
         var customer = _mapper.Map<Customer>(request);
 
         await _customerRepository.RegisterCustomerAsync(customer);
 
-        return true;
+        return Result.Success();
     }
 
-    public async Task<IEnumerable<Customer>> GetAllCustomers()
+    public async Task<Result<IEnumerable<Customer>>> GetAllCustomers()
     {
         var customers = await _customerRepository.GetAllCustomers();
 
         if (!customers.Any())
         {
-            return Enumerable.Empty<Customer>();
+            return Result.Success(Enumerable.Empty<Customer>());
         }
 
-        return customers;
+        return Result.Success(customers);
     }
 
-    public async Task<GetCustomerDetailsResponse> GetCustomerDetails(Guid id)
+    public async Task<Result<GetCustomerDetailsResponse>> GetCustomerDetails(Guid id)
     {
         var customer = await _customerRepository.GetCustomerDetails(id);
 
-        //if (customer.Id == Guid.Empty)
-        //{
-        //    return new GetCustomerDetailsResponse(); // 404
-        //}
+        if (customer.Id == Guid.Empty)
+        {
+            return Result.NotFound();
+        }
 
-        var mainAddress = customer
+        var address = customer
             .Addresses
             .First(address => address.Main);
 
-        var addressResponse = _mapper.Map<AddressResponse>(mainAddress);
+        var addressResponse = _mapper.Map<AddressResponse>(address);
 
         var response = new GetCustomerDetailsResponse(customer.Mail, addressResponse);
 
-        return response;
+        return Result.Success(response);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using ACME.Store.Domain.Interfaces.Services;
 using ACME.Store.Domain.Models.Requests;
+using ACME.Store.Domain.Models.Responses;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -59,12 +60,13 @@ public class CustomerController : StandardController
     }
 
     [HttpGet("customer/details")]
+    [ProducesResponseType(typeof(GetCustomerDetailsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetCustomerDetailsAsync([FromQuery] Guid id)
     {
         var customerDetails = await _customerService.GetCustomerDetails(id);
 
-        return Ok(customerDetails);
+        return Ok(customerDetails.Value);
     }
 
     [HttpGet("customers")]

@@ -4,6 +4,7 @@ using ACME.Store.Domain.Middlewares;
 using ACME.Store.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace ACME.Store.Presentation;
 
@@ -13,11 +14,14 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        if (builder.Environment.IsDevelopment())
+        {
+            builder.Services.AddSwaggerGen();
+        }
+
         builder.Services.AddControllers();
 
         builder.Services.AddEndpointsApiExplorer();
-
-        builder.Services.AddSwaggerGen();
 
         builder.Services.AddDomainConfigurations();
 
@@ -27,9 +31,14 @@ public static class Program
 
         var app = builder.Build();
 
-        app.UseSwagger();
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
 
-        app.UseSwaggerUI();
+            app.UseSwaggerUI();
+
+            app.UseDeveloperExceptionPage();
+        }
 
         app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
