@@ -58,7 +58,7 @@ public class CustomerService : ICustomerService
 
         var mainAddress = customer
             .Addresses
-            .First(address => address.Main);
+            .FirstOrDefault(address => address.Main);
 
         var mainAddressResponse = _mapper.Map<AddressResponse>(mainAddress);
 

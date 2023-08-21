@@ -43,7 +43,10 @@ public class CustomerController : StandardController
 
         var result = await _customerService.RegisterCustomerAsync(request);
 
-        return CreatedAtAction("Customer registration", new { Id = result.Value });
+        return new ObjectResult(new { Id = result.Value })
+        {
+            StatusCode = StatusCodes.Status201Created
+        };
     }
 
     [HttpGet("customer/details/{id}")]

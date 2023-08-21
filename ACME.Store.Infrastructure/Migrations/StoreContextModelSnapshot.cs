@@ -155,13 +155,11 @@ namespace ACME.Store.Infrastructure.Migrations
 
             modelBuilder.Entity("ACME.Store.Domain.Entities.Address", b =>
                 {
-                    b.HasOne("ACME.Store.Domain.Entities.Customer", "Customer")
+                    b.HasOne("ACME.Store.Domain.Entities.Customer", null)
                         .WithMany("Addresses")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("ACME.Store.Domain.Entities.Customer", b =>

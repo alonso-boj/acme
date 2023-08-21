@@ -26,6 +26,9 @@ public class AddressController : StandardController
     {
         var result = await _addressService.RegisterCustomerAddressAsync(request);
 
-        return CreatedAtAction("Address registration", new { Id = result.Value });
+        return new ObjectResult(new { Id = result.Value })
+        {
+            StatusCode = StatusCodes.Status201Created
+        };
     }
 }

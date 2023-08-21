@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ACME.Store.Infrastructure.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20230820221111_create-database")]
+    [Migration("20230821115114_create-database")]
     partial class createdatabase
     {
         /// <inheritdoc />
@@ -158,13 +158,11 @@ namespace ACME.Store.Infrastructure.Migrations
 
             modelBuilder.Entity("ACME.Store.Domain.Entities.Address", b =>
                 {
-                    b.HasOne("ACME.Store.Domain.Entities.Customer", "Customer")
+                    b.HasOne("ACME.Store.Domain.Entities.Customer", null)
                         .WithMany("Addresses")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("ACME.Store.Domain.Entities.Customer", b =>

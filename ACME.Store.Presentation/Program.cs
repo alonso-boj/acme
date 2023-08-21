@@ -1,8 +1,10 @@
 using ACME.Store.Application.Extensions;
 using ACME.Store.Domain.Extensions;
 using ACME.Store.Domain.Middlewares;
+using ACME.Store.Infrastructure.Configurations;
 using ACME.Store.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -45,6 +47,13 @@ public static class Program
         app.UseHttpsRedirection();
 
         app.MapControllers();
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var dataContext = scope.ServiceProvider.GetRequiredService<StoreContext>();
+
+            dataContext.Database.Migrate();
+        }
 
         app.Run();
     }
