@@ -50,11 +50,5 @@ public class CustomerMap : IEntityTypeConfiguration<Customer>
             .HasColumnOrder(5)
             .HasColumnName("last-updated-at")
             .HasColumnType("smalldatetime");
-
-        builder
-            .HasMany(customer => customer.Addresses)
-            .WithOne(address => address.Customer)
-            .HasForeignKey(address => address.CustomerId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

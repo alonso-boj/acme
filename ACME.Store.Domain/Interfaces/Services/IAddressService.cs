@@ -2,8 +2,7 @@
 using System.Threading.Tasks;
 
 namespace ACME.Store.Domain.Interfaces.Services;
-
 public interface IAddressService
 {
-    Task<bool> RegisterCustomerAddressAsync(RegisterCustomerAddressRequest requestDto);
+    Task<bool> RegisterCustomerAddressAsync(RegisterCustomerAddressRequest request);
 }

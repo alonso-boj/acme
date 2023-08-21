@@ -11,7 +11,7 @@ public sealed class Address : BaseEntity
 
     public Address(bool main, string street, int number,
         string complement, string neighborhood, string city,
-        string state, int zipCode, Guid customerId, Customer customer)
+        string state, int zipCode, Guid customerId)
     {
         Main = main;
         Street = street;
@@ -22,7 +22,6 @@ public sealed class Address : BaseEntity
         State = state;
         ZipCode = zipCode;
         CustomerId = customerId;
-        Customer = customer;
     }
 
     public bool Main { get; private set; }
@@ -43,7 +42,4 @@ public sealed class Address : BaseEntity
 
     // Foreign key property
     public Guid CustomerId { get; private set; }
-
-    // Navigation property
-    public Customer Customer { get; private set; } = new();
 }
