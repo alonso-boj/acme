@@ -2,28 +2,30 @@
 using ACME.Store.Domain.Interfaces.Repositories;
 using ACME.Store.Domain.Interfaces.Services;
 using ACME.Store.Domain.Models.Requests;
+using Ardalis.Result;
 using AutoMapper;
+using System;
 using System.Threading.Tasks;
 
 namespace ACME.Store.Application.Services;
 
 public class AddressService : IAddressService
 {
-    private readonly IMapper _mapper;
     private readonly IAddressRepository _addressRepository;
+    private readonly IMapper _mapper;
 
-    public AddressService(IMapper mapper, IAddressRepository addressRepository)
+    public AddressService(IAddressRepository addressRepository, IMapper mapper)
     {
-        _mapper = mapper;
         _addressRepository = addressRepository;
+        _mapper = mapper;
     }
 
-    public async Task<bool> RegisterCustomerAddressAsync(RegisterCustomerAddressRequest request)
+    public async Task<Result<Guid>> RegisterCustomerAddressAsync(RegisterCustomerAddressRequest request)
     {
         var address = _mapper.Map<Address>(request);
 
         await _addressRepository.RegisterCustomerAddressAsync(address);
 
-        return true;
+        return Result.Success(address.Id);
     }
 }

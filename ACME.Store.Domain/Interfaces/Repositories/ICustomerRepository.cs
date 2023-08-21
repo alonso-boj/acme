@@ -7,9 +7,9 @@ namespace ACME.Store.Domain.Interfaces.Repositories;
 
 public interface ICustomerRepository
 {
-    Task<bool> RegisterCustomerAsync(Customer customer);
+    Task RegisterCustomerAsync(Customer customer);
 
-    Task<IEnumerable<Customer>> GetAllCustomers();
+    Task<IEnumerable<Customer>> GetAllCustomersAsync();
 
-    Task<Customer> GetCustomerDetails(Guid id);
+    Task<Customer?> GetCustomerDetailsAsync(Guid id);
 }

@@ -18,27 +18,24 @@ public class CustomerRepository : ICustomerRepository
         _context = context;
     }
 
-    public async Task<bool> RegisterCustomerAsync(Customer customer)
+    public async Task RegisterCustomerAsync(Customer customer)
     {
         _context.Customers.Add(customer);
 
         await _context.SaveChangesAsync();
-
-        return true;
     }
 
-    public async Task<IEnumerable<Customer>> GetAllCustomers()
+    public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
     {
         var customers = await _context
             .Customers
-            .IgnoreAutoIncludes()
             .AsNoTracking()
             .ToArrayAsync();
 
         return customers;
     }
 
-    public async Task<Customer> GetCustomerDetails(Guid id)
+    public async Task<Customer?> GetCustomerDetailsAsync(Guid id)
     {
         var customer = await _context
             .Customers
@@ -46,14 +43,6 @@ public class CustomerRepository : ICustomerRepository
             .Include(customer => customer.Addresses)
             .AsNoTracking()
             .FirstOrDefaultAsync();
-
-        if (customer is null)
-        {
-            return new Customer()
-            {
-                Id = Guid.Empty
-            };
-        }
 
         return customer;
     }

@@ -5,6 +5,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ACME.Store.Presentation.Controllers;
@@ -13,24 +14,20 @@ namespace ACME.Store.Presentation.Controllers;
 [Route("api")]
 public class CustomerController : StandardController
 {
+    private readonly ICustomerService _customerService;
     private readonly IValidator<RegisterCustomerRequest> _registerCustomerRequestValidator;
 
-    private readonly ICustomerService _customerService;
-    private readonly IAddressService _addressService;
-
     public CustomerController(
-        IValidator<RegisterCustomerRequest> registerCustomerRequestValidator,
-
         ICustomerService customerService,
-        IAddressService addressService)
+        IValidator<RegisterCustomerRequest> registerCustomerRequestValidator)
     {
-        _registerCustomerRequestValidator = registerCustomerRequestValidator;
-
         _customerService = customerService;
-        _addressService = addressService;
+        _registerCustomerRequestValidator = registerCustomerRequestValidator;
     }
 
     [HttpPost("customer/registration")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> RegisterCustomerAsync([FromBody] RegisterCustomerRequest request)
@@ -44,37 +41,29 @@ public class CustomerController : StandardController
             return UnprocessableEntity(validationProblemDetails);
         }
 
-        await _customerService.RegisterCustomerAsync(request);
+        var result = await _customerService.RegisterCustomerAsync(request);
 
-        return Ok();
+        return CreatedAtAction("Customer registration", new { Id = result.Value });
     }
 
-    [HttpPost("customer/address/registration")]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> RegisterCustomerAddressAsync([FromBody] RegisterCustomerAddressRequest request)
-    {
-        await _addressService.RegisterCustomerAddressAsync(request);
-
-        return Ok();
-    }
-
-    [HttpGet("customer/details")]
+    [HttpGet("customer/details/{id}")]
     [ProducesResponseType(typeof(GetCustomerDetailsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetCustomerDetailsAsync([FromQuery] Guid id)
+    public async Task<IActionResult> GetCustomerDetailsAsync([FromRoute] Guid id)
     {
-        var customerDetails = await _customerService.GetCustomerDetails(id);
+        var result = await _customerService.GetCustomerDetails(id);
 
-        return Ok(customerDetails.Value);
+        return Ok(result.Value);
     }
 
     [HttpGet("customers")]
+    [ProducesResponseType(typeof(IEnumerable<CustomerResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllCustomersAsync()
     {
-        var customers = await _customerService.GetAllCustomers();
+        var result = await _customerService.GetAllCustomers();
 
-        return Ok(customers);
+        return Ok(result.Value);
     }
 }

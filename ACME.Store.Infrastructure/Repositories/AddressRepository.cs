@@ -14,12 +14,10 @@ public class AddressRepository : IAddressRepository
         _context = context;
     }
 
-    public async Task<bool> RegisterCustomerAddressAsync(Address address)
+    public async Task RegisterCustomerAddressAsync(Address address)
     {
         _context.Addresses.Add(address);
 
         await _context.SaveChangesAsync();
-
-        return true;
     }
 }

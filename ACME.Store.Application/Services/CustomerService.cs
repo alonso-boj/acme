@@ -18,49 +18,51 @@ public class CustomerService : ICustomerService
 
     private readonly IMapper _mapper;
 
-    public CustomerService(IMapper mapper, ICustomerRepository customerRepository)
+    public CustomerService(ICustomerRepository customerRepository, IMapper mapper)
     {
-        _mapper = mapper;
         _customerRepository = customerRepository;
+        _mapper = mapper;
     }
 
-    public async Task<Result> RegisterCustomerAsync(RegisterCustomerRequest request)
+    public async Task<Result<Guid>> RegisterCustomerAsync(RegisterCustomerRequest request)
     {
         var customer = _mapper.Map<Customer>(request);
 
         await _customerRepository.RegisterCustomerAsync(customer);
 
-        return Result.Success();
+        return Result.Success(customer.Id);
     }
 
-    public async Task<Result<IEnumerable<Customer>>> GetAllCustomers()
+    public async Task<Result<IEnumerable<CustomerResponse>>> GetAllCustomers()
     {
-        var customers = await _customerRepository.GetAllCustomers();
+        var customers = await _customerRepository.GetAllCustomersAsync();
 
         if (!customers.Any())
         {
-            return Result.Success(Enumerable.Empty<Customer>());
+            return Result.Success(Enumerable.Empty<CustomerResponse>());
         }
 
-        return Result.Success(customers);
+        var response = _mapper.Map<IEnumerable<CustomerResponse>>(customers);
+
+        return Result.Success(response);
     }
 
     public async Task<Result<GetCustomerDetailsResponse>> GetCustomerDetails(Guid id)
     {
-        var customer = await _customerRepository.GetCustomerDetails(id);
+        var customer = await _customerRepository.GetCustomerDetailsAsync(id);
 
-        if (customer.Id == Guid.Empty)
+        if (customer is null)
         {
             return Result.NotFound();
         }
 
-        var address = customer
+        var mainAddress = customer
             .Addresses
             .First(address => address.Main);
 
-        var addressResponse = _mapper.Map<AddressResponse>(address);
+        var mainAddressResponse = _mapper.Map<AddressResponse>(mainAddress);
 
-        var response = new GetCustomerDetailsResponse(customer.Mail, addressResponse);
+        var response = new GetCustomerDetailsResponse(customer.Mail, mainAddressResponse);
 
         return Result.Success(response);
     }

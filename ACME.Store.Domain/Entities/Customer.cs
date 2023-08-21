@@ -24,18 +24,4 @@ public sealed class Customer : BaseEntity
 
     // Navigation property
     public ICollection<Address> Addresses { get; private set; } = new List<Address>();
-
-    public bool AddAddress(Address address)
-    {
-        Addresses.Add(address);
-
-        return true;
-    }
-
-    public bool RemoveAddress(Address address)
-    {
-        Addresses.Remove(address);
-
-        return true;
-    }
 }

@@ -1,8 +1,10 @@
 ﻿using ACME.Store.Domain.Models.Requests;
+using Ardalis.Result;
+using System;
 using System.Threading.Tasks;
 
 namespace ACME.Store.Domain.Interfaces.Services;
 public interface IAddressService
 {
-    Task<bool> RegisterCustomerAddressAsync(RegisterCustomerAddressRequest request);
+    Task<Result<Guid>> RegisterCustomerAddressAsync(RegisterCustomerAddressRequest request);
 }

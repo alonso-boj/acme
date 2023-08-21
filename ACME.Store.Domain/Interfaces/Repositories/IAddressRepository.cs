@@ -5,5 +5,5 @@ namespace ACME.Store.Domain.Interfaces.Repositories;
 
 public interface IAddressRepository
 {
-    Task<bool> RegisterCustomerAddressAsync(Address address);
+    Task RegisterCustomerAddressAsync(Address address);
 }
