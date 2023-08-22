@@ -12,19 +12,31 @@ namespace ACME.Store.Application.Services;
 public class AddressService : IAddressService
 {
     private readonly IAddressRepository _addressRepository;
+    private readonly ICustomerRepository _customerRepository;
     private readonly IMapper _mapper;
 
-    public AddressService(IAddressRepository addressRepository, IMapper mapper)
+    public AddressService(
+        IAddressRepository addressRepository,
+        ICustomerRepository customerRepository,
+        IMapper mapper)
     {
         _addressRepository = addressRepository;
+        _customerRepository = customerRepository;
         _mapper = mapper;
     }
 
-    public async Task<Result<Guid>> RegisterCustomerAddressAsync(RegisterCustomerAddressRequest request)
+    public async Task<Result<Guid>> RegisterAddressAsync(RegisterAddressRequest request)
     {
         var address = _mapper.Map<Address>(request);
 
-        await _addressRepository.RegisterCustomerAddressAsync(address);
+        var customer = await _customerRepository.GetCustomerDetailsAsync(address.CustomerId);
+
+        if (customer is null)
+        {
+            return Result.NotFound($"Customer with id {address.CustomerId} was not found");
+        }
+
+        await _addressRepository.RegisterAddressAsync(address);
 
         return Result.Success(address.Id);
     }

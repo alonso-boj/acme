@@ -1,28 +1,31 @@
 ﻿using ACME.Store.Domain.Interfaces.Services;
 using ACME.Store.Domain.Models.Requests;
 using ACME.Store.Domain.Models.Responses;
+using Ardalis.Result;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ACME.Store.Presentation.Controllers;
 
 [ApiController]
 [Route("api")]
+[Produces("application/json")]
 public class CustomerController : StandardController
 {
     private readonly ICustomerService _customerService;
-    private readonly IValidator<RegisterCustomerRequest> _registerCustomerRequestValidator;
+    private readonly IValidator<RegisterCustomerRequest> _validator;
 
     public CustomerController(
         ICustomerService customerService,
-        IValidator<RegisterCustomerRequest> registerCustomerRequestValidator)
+        IValidator<RegisterCustomerRequest> validator)
     {
         _customerService = customerService;
-        _registerCustomerRequestValidator = registerCustomerRequestValidator;
+        _validator = validator;
     }
 
     [HttpPost("customer/registration")]
@@ -32,11 +35,11 @@ public class CustomerController : StandardController
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> RegisterCustomerAsync([FromBody] RegisterCustomerRequest request)
     {
-        var validationResult = await _registerCustomerRequestValidator.ValidateAsync(request);
+        var validationResult = await _validator.ValidateAsync(request);
 
         if (!validationResult.IsValid)
         {
-            ValidationProblemDetails validationProblemDetails = GetValidationProblemDetails(validationResult);
+            var validationProblemDetails = GetValidationProblemDetails(validationResult);
 
             return UnprocessableEntity(validationProblemDetails);
         }
@@ -56,6 +59,11 @@ public class CustomerController : StandardController
     public async Task<IActionResult> GetCustomerDetailsAsync([FromRoute] Guid id)
     {
         var result = await _customerService.GetCustomerDetails(id);
+
+        if (result.Status == ResultStatus.NotFound)
+        {
+            return NotFound(new { Error = result.Errors.First() });
+        }
 
         return Ok(result.Value);
     }

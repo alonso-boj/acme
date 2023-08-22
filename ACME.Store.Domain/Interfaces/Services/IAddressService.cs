@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 namespace ACME.Store.Domain.Interfaces.Services;
 public interface IAddressService
 {
-    Task<Result<Guid>> RegisterCustomerAddressAsync(RegisterCustomerAddressRequest request);
+    Task<Result<Guid>> RegisterAddressAsync(RegisterAddressRequest request);
 }

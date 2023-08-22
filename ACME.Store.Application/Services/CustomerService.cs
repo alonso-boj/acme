@@ -53,7 +53,7 @@ public class CustomerService : ICustomerService
 
         if (customer is null)
         {
-            return Result.NotFound();
+            return Result.NotFound($"Customer with {id} was not found");
         }
 
         var mainAddress = customer

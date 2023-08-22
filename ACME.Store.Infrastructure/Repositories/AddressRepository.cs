@@ -14,7 +14,7 @@ public class AddressRepository : IAddressRepository
         _context = context;
     }
 
-    public async Task RegisterCustomerAddressAsync(Address address)
+    public async Task RegisterAddressAsync(Address address)
     {
         _context.Addresses.Add(address);
 

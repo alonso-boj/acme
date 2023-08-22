@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace ACME.Store.Domain.Models.Requests;
-public record RegisterCustomerAddressRequest(
+public record RegisterAddressRequest(
     bool Main,
     string Street,
     int Number,
@@ -9,5 +9,5 @@ public record RegisterCustomerAddressRequest(
     string Neighborhood,
     string City,
     string State,
-    int ZipCode,
+    string ZipCode,
     Guid CustomerId);

@@ -4,7 +4,7 @@ using ACME.Store.Domain.Models.Requests;
 using ACME.Store.Domain.Models.Responses;
 using AutoMapper;
 
-namespace ACME.Store.Application.Configuration.AutoMapper;
+namespace ACME.Store.Application.Configurations.AutoMapper;
 
 public class AddressProfile : Profile
 {
@@ -14,7 +14,7 @@ public class AddressProfile : Profile
         .IgnoreBaseEntityProperties()
         .ReverseMap();
 
-        CreateMap<RegisterCustomerAddressRequest, Address>()
+        CreateMap<RegisterAddressRequest, Address>()
         .IgnoreBaseEntityProperties()
         .ReverseMap();
     }

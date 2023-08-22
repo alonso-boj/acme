@@ -11,7 +11,7 @@ public static class DependencyInjection
     {
         services.AddDbContext<StoreContext>();
 
-        services.AddSingleton<StoreContext, StoreContext>();
+        services.AddScoped<StoreContext, StoreContext>();
 
         services.AddScoped<ICustomerRepository, CustomerRepository>();
 

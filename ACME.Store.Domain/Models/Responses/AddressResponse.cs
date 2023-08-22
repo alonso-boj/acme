@@ -8,4 +8,4 @@ public record AddressResponse(
     string Neighborhood,
     string City,
     string State,
-    int ZipCode);
+    string ZipCode);
