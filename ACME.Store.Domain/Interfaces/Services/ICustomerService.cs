@@ -11,7 +11,7 @@ public interface ICustomerService
 {
     Task<Result<Guid>> RegisterCustomerAsync(RegisterCustomerRequest request);
 
-    Task<Result<IEnumerable<CustomerResponse>>> GetAllCustomers();
+    Task<Result<IEnumerable<CustomerResponse>>> GetAllCustomersAsync();
 
-    Task<Result<GetCustomerDetailsResponse>> GetCustomerDetails(Guid id);
+    Task<Result<GetCustomerDetailsResponse>> GetCustomerDetailsAsync(Guid id);
 }

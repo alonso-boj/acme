@@ -33,7 +33,7 @@ public class CustomerService : ICustomerService
         return Result.Success(customer.Id);
     }
 
-    public async Task<Result<IEnumerable<CustomerResponse>>> GetAllCustomers()
+    public async Task<Result<IEnumerable<CustomerResponse>>> GetAllCustomersAsync()
     {
         var customers = await _customerRepository.GetAllCustomersAsync();
 
@@ -47,7 +47,7 @@ public class CustomerService : ICustomerService
         return Result.Success(response);
     }
 
-    public async Task<Result<GetCustomerDetailsResponse>> GetCustomerDetails(Guid id)
+    public async Task<Result<GetCustomerDetailsResponse>> GetCustomerDetailsAsync(Guid id)
     {
         var customer = await _customerRepository.GetCustomerDetailsAsync(id);
 

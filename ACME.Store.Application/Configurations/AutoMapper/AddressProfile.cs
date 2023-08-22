@@ -12,6 +12,7 @@ public class AddressProfile : Profile
     {
         CreateMap<AddressResponse, Address>()
         .IgnoreBaseEntityProperties()
+        .ForMember(dest => dest.CustomerId, opt => opt.Ignore())
         .ReverseMap();
 
         CreateMap<RegisterAddressRequest, Address>()

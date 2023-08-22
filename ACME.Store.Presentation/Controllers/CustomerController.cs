@@ -58,7 +58,7 @@ public class CustomerController : StandardController
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetCustomerDetailsAsync([FromRoute] Guid id)
     {
-        var result = await _customerService.GetCustomerDetails(id);
+        var result = await _customerService.GetCustomerDetailsAsync(id);
 
         if (result.Status == ResultStatus.NotFound)
         {
@@ -73,7 +73,7 @@ public class CustomerController : StandardController
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllCustomersAsync()
     {
-        var result = await _customerService.GetAllCustomers();
+        var result = await _customerService.GetAllCustomersAsync();
 
         return Ok(result.Value);
     }
