@@ -34,10 +34,11 @@ public class CustomerServiceTests
         var service = new CustomerService(mock.Object, _mapper);
 
         // Act
-        await service.RegisterCustomerAsync(request);
+        var result = await service.RegisterCustomerAsync(request);
 
         // Assert
         mock.Verify(repo => repo.RegisterCustomerAsync(It.IsAny<Customer>()), Times.Once());
+        Assert.True(result.IsSuccess);
     }
 
     [Fact]
@@ -125,7 +126,7 @@ public class CustomerServiceTests
     }
 
     [Fact]
-    public async Task GetCustomerDetailsAsync_CustomersNotFound_ReturnsNotFoundResultWithErrorMessage()
+    public async Task GetCustomerDetailsAsync_CustomerNotFound_ReturnsNotFoundResultWithErrorMessage()
     {
         // Arrange
         var id = Guid.NewGuid();
