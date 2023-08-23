@@ -24,4 +24,9 @@ public sealed class Customer : BaseEntity
 
     // Navigation property
     public ICollection<Address> Addresses { get; private set; } = new List<Address>();
+
+    public void AddAddress(Address address)
+    {
+        Addresses.Add(address);
+    }
 }
