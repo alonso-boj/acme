@@ -1,4 +1,5 @@
 ﻿using ACME.Store.Application.Validators;
+using ACME.Store.Domain.Constants;
 using ACME.Store.Domain.Models.Requests;
 using Xunit;
 
@@ -6,13 +7,18 @@ namespace ACME.Store.Tests.Validators;
 
 public class RegisterCustomerRequestValidatorTests
 {
-    [Fact]
-    public void RegisterCustomerRequestValidator_InvalidName_ReturnsValidationErrors()
+    [Theory]
+    [InlineData("", ValidationErrorMessages.NAME_NOT_EMPTY)]
+    [InlineData(null, ValidationErrorMessages.NAME_NOT_EMPTY)]
+    [InlineData("ab", ValidationErrorMessages.NAME_LENGTH)]
+    [InlineData("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text", ValidationErrorMessages.NAME_LENGTH)]
+    public void RegisterCustomerRequestValidator_InvalidName_ReturnsValidationErrors(
+        string value, string expectedResult)
     {
         // Arrange
         var validator = new RegisterCustomerRequestValidator();
 
-        var request = new RegisterCustomerRequest("", "31999999999", "test@test.com");
+        var request = new RegisterCustomerRequest(value, "31999999999", "test@test.com");
 
         // Act
         var result = validator.Validate(request);
@@ -21,19 +27,24 @@ public class RegisterCustomerRequestValidatorTests
         Assert.False(result.IsValid);
 
         Assert.True(result.Errors
-            .Exists(validationFailure => validationFailure.ErrorMessage.Equals("Name cannot be empty or null")));
+            .Exists(validationFailure => validationFailure.ErrorMessage.Equals(expectedResult)));
 
         Assert.True(result.Errors
-            .Exists(validationFailure => validationFailure.ErrorMessage.Equals("Name must be between 3 and 128 characters")));
+            .Exists(validationFailure => validationFailure.ErrorMessage.Equals(expectedResult)));
     }
 
-    [Fact]
-    public void RegisterCustomerRequestValidator_InvalidPhone_ReturnsValidationErrors()
+    [Theory]
+    [InlineData("", ValidationErrorMessages.PHONE_NOT_EMPTY)]
+    [InlineData(null, ValidationErrorMessages.PHONE_NOT_EMPTY)]
+    [InlineData("ab", ValidationErrorMessages.PHONE_LENGTH)]
+    [InlineData("31999", ValidationErrorMessages.PHONE_LENGTH)]
+    public void RegisterCustomerRequestValidator_InvalidPhone_ReturnsValidationErrors(
+        string value, string expectedResult)
     {
         // Arrange
         var validator = new RegisterCustomerRequestValidator();
 
-        var request = new RegisterCustomerRequest("Test", "", "test@test.com");
+        var request = new RegisterCustomerRequest("Test", value, "test@test.com");
 
         // Act
         var result = validator.Validate(request);
@@ -42,19 +53,23 @@ public class RegisterCustomerRequestValidatorTests
         Assert.False(result.IsValid);
 
         Assert.True(result.Errors
-            .Exists(validationFailure => validationFailure.ErrorMessage.Equals("Phone cannot be empty or null")));
+            .Exists(validationFailure => validationFailure.ErrorMessage.Equals(expectedResult)));
 
         Assert.True(result.Errors
-            .Exists(validationFailure => validationFailure.ErrorMessage.Equals("Phone must be exactly 11 characters")));
+            .Exists(validationFailure => validationFailure.ErrorMessage.Equals(expectedResult)));
     }
 
-    [Fact]
-    public void RegisterCustomerRequestValidator_InvalidMail_ReturnsValidationErrors()
+    [Theory]
+    [InlineData("", ValidationErrorMessages.MAIL_NOT_EMPTY)]
+    [InlineData(null, ValidationErrorMessages.MAIL_NOT_EMPTY)]
+    [InlineData("test", ValidationErrorMessages.INVALID_MAIL)]
+    public void RegisterCustomerRequestValidator_InvalidMail_ReturnsValidationErrors(
+        string value, string expectedResult)
     {
         // Arrange
         var validator = new RegisterCustomerRequestValidator();
 
-        var request = new RegisterCustomerRequest("Test", "31999999999", "");
+        var request = new RegisterCustomerRequest("Test", "31999999999", value);
 
         // Act
         var result = validator.Validate(request);
@@ -63,9 +78,9 @@ public class RegisterCustomerRequestValidatorTests
         Assert.False(result.IsValid);
 
         Assert.True(result.Errors
-            .Exists(validationFailure => validationFailure.ErrorMessage.Equals("Mail cannot be empty or null")));
+            .Exists(validationFailure => validationFailure.ErrorMessage.Equals(expectedResult)));
 
         Assert.True(result.Errors
-            .Exists(validationFailure => validationFailure.ErrorMessage.Equals("Mail must be a valid e-mail address")));
+            .Exists(validationFailure => validationFailure.ErrorMessage.Equals(expectedResult)));
     }
 }

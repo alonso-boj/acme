@@ -1,4 +1,5 @@
-﻿using ACME.Store.Domain.Models.Requests;
+﻿using ACME.Store.Domain.Constants;
+using ACME.Store.Domain.Models.Requests;
 using FluentValidation;
 
 namespace ACME.Store.Application.Validators;
@@ -11,20 +12,20 @@ public class RegisterCustomerRequestValidator : AbstractValidator<RegisterCustom
 
         RuleFor(request => request.Name)
             .NotEmpty()
-            .WithMessage("Name cannot be empty or null")
+            .WithMessage(ValidationErrorMessages.NAME_NOT_EMPTY)
             .Length(3, 128)
-            .WithMessage("Name must be between 3 and 128 characters");
+            .WithMessage(ValidationErrorMessages.NAME_LENGTH);
 
         RuleFor(request => request.Phone)
             .NotEmpty()
-            .WithMessage("Phone cannot be empty or null")
+            .WithMessage(ValidationErrorMessages.PHONE_NOT_EMPTY)
             .Length(11)
-            .WithMessage("Phone must be exactly 11 characters");
+            .WithMessage(ValidationErrorMessages.PHONE_LENGTH);
 
         RuleFor(request => request.Mail)
             .NotEmpty()
-            .WithMessage("Mail cannot be empty or null")
+            .WithMessage(ValidationErrorMessages.MAIL_NOT_EMPTY)
             .EmailAddress()
-            .WithMessage("Mail must be a valid e-mail address");
+            .WithMessage(ValidationErrorMessages.INVALID_MAIL);
     }
 }
