@@ -28,9 +28,6 @@ public class RegisterCustomerRequestValidatorTests
 
         Assert.True(result.Errors
             .Exists(validationFailure => validationFailure.ErrorMessage.Equals(expectedResult)));
-
-        Assert.True(result.Errors
-            .Exists(validationFailure => validationFailure.ErrorMessage.Equals(expectedResult)));
     }
 
     [Theory]
@@ -54,9 +51,6 @@ public class RegisterCustomerRequestValidatorTests
 
         Assert.True(result.Errors
             .Exists(validationFailure => validationFailure.ErrorMessage.Equals(expectedResult)));
-
-        Assert.True(result.Errors
-            .Exists(validationFailure => validationFailure.ErrorMessage.Equals(expectedResult)));
     }
 
     [Theory]
@@ -76,9 +70,6 @@ public class RegisterCustomerRequestValidatorTests
 
         // Assert
         Assert.False(result.IsValid);
-
-        Assert.True(result.Errors
-            .Exists(validationFailure => validationFailure.ErrorMessage.Equals(expectedResult)));
 
         Assert.True(result.Errors
             .Exists(validationFailure => validationFailure.ErrorMessage.Equals(expectedResult)));

@@ -1,4 +1,5 @@
-﻿using ACME.Store.Domain.Models.Requests;
+﻿using ACME.Store.Domain.Constants;
+using ACME.Store.Domain.Models.Requests;
 using FluentValidation;
 
 namespace ACME.Store.Application.Validators;
@@ -9,48 +10,44 @@ public class RegisterAddressRequestValidator : AbstractValidator<RegisterAddress
     {
         ClassLevelCascadeMode = CascadeMode.Continue;
 
-        RuleFor(request => request.Main)
-            .NotNull()
-            .WithMessage("Main cannot be null");
-
         RuleFor(request => request.Street)
             .NotEmpty()
-            .WithMessage("Street cannot be empty or null")
+            .WithMessage(ValidationErrorMessages.STREET_NOT_EMPTY)
             .Length(3, 128)
-            .WithMessage("Street must be between 3 and 128 characters");
+            .WithMessage(ValidationErrorMessages.STREET_LENGTH);
 
         RuleFor(request => request.Number)
             .NotEmpty()
-            .WithMessage("Number cannot be null or zero");
+            .WithMessage(ValidationErrorMessages.NUMBER_NOT_EMPTY);
 
         RuleFor(request => request.Complement)
             .NotNull()
-            .WithMessage("Complement cannot be null")
+            .WithMessage(ValidationErrorMessages.COMPLEMENT_NOT_NULL)
             .Length(3, 128)
-            .WithMessage("Complement must be between 3 and 128 characters");
+            .WithMessage(ValidationErrorMessages.COMPLEMENT_LENGTH);
+
+        RuleFor(request => request.Neighborhood)
+            .NotEmpty()
+            .WithMessage(ValidationErrorMessages.NEIGHBORHOOD_NOT_EMPTY)
+            .Length(3, 128)
+            .WithMessage(ValidationErrorMessages.NEIGHBORHOOD_LENGTH);
 
         RuleFor(request => request.City)
             .NotEmpty()
-            .WithMessage("City cannot be empty or null")
+            .WithMessage(ValidationErrorMessages.CITY_NOT_EMPTY)
             .Length(3, 128)
-            .WithMessage("City must be between 3 and 128 characters");
+            .WithMessage(ValidationErrorMessages.CITY_LENGTH);
 
         RuleFor(request => request.State)
             .NotEmpty()
-            .WithMessage("State cannot be empty or null")
+            .WithMessage(ValidationErrorMessages.STATE_NOT_EMPTY)
             .Length(3, 64)
-            .WithMessage("State must be between 3 and 64 characters");
+            .WithMessage(ValidationErrorMessages.STATE_LENGTH);
 
         RuleFor(request => request.ZipCode)
             .NotEmpty()
-            .WithMessage("ZipCode cannot be null or zero")
+            .WithMessage(ValidationErrorMessages.ZIPCODE_NOT_EMPTY)
             .Length(8)
-            .WithMessage("ZipCode must be exactly 8 characters");
-
-        RuleFor(request => request.CustomerId.ToString())
-            .NotEmpty()
-            .WithMessage("CustomerId cannot be empty or null")
-            .Length(36)
-            .WithMessage("CustomerId must be exactly 36 characters");
+            .WithMessage(ValidationErrorMessages.ZIPCODE_LENGTH);
     }
 }
