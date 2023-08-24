@@ -7,17 +7,14 @@ namespace ACME.Store.Infrastructure.Configurations;
 
 public class StoreContext : DbContext
 {
+    public StoreContext(DbContextOptions<StoreContext> options) : base(options)
+    {
+        
+    }
+
     public DbSet<Customer> Customers { get; set; }
 
     public DbSet<Address> Addresses { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer("Server=localhost,1433;Database=acme-store;User ID=sa;Password=1q2w3e4r@#$;TrustServerCertificate=True")
-            .EnableSensitiveDataLogging(true)
-            .EnableDetailedErrors(true)
-            .LogTo(Console.WriteLine);
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

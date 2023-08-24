@@ -16,6 +16,8 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        var configuration = builder.Configuration;
+
         if (builder.Environment.IsDevelopment())
         {
             builder.Services.AddSwaggerGen();
@@ -27,7 +29,7 @@ public static class Program
 
         builder.Services.AddDomainConfigurations();
 
-        builder.Services.AddInfrastructureConfigurations();
+        builder.Services.AddInfrastructureConfigurations(configuration, builder.Environment.IsDevelopment());
 
         builder.Services.AddApplicationConfigurations();
 
