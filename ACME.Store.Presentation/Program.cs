@@ -3,6 +3,7 @@ using ACME.Store.Domain.Extensions;
 using ACME.Store.Domain.Middlewares;
 using ACME.Store.Infrastructure.Configurations;
 using ACME.Store.Infrastructure.Extensions;
+using ACME.Store.Presentation.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +21,7 @@ public static class Program
 
         if (builder.Environment.IsDevelopment())
         {
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGenConfigurations();
         }
 
         builder.Services.AddControllers();
@@ -52,9 +53,9 @@ public static class Program
 
         using (var scope = app.Services.CreateScope())
         {
-            var dataContext = scope.ServiceProvider.GetRequiredService<StoreContext>();
+            var context = scope.ServiceProvider.GetRequiredService<StoreContext>();
 
-            dataContext.Database.Migrate();
+            context.Database.Migrate();
         }
 
         app.Run();

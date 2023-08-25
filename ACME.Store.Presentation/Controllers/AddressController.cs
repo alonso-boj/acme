@@ -11,6 +11,7 @@ namespace ACME.Store.Presentation.Controllers;
 
 [ApiController]
 [Route("api")]
+[Consumes("application/json")]
 [Produces("application/json")]
 public class AddressController : StandardController
 {
@@ -26,10 +27,9 @@ public class AddressController : StandardController
     }
 
     /// <summary>
-    /// 
+    /// Route in charge of registering a customer address.
     /// </summary>
-    /// <param name="request"></param>
-    /// <returns></returns>
+    /// <param name="request">Register address request.</param>
     [HttpPost("address/registration")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

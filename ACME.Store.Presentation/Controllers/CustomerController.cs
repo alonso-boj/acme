@@ -14,6 +14,7 @@ namespace ACME.Store.Presentation.Controllers;
 
 [ApiController]
 [Route("api")]
+[Consumes("application/json")]
 [Produces("application/json")]
 public class CustomerController : StandardController
 {
@@ -29,10 +30,9 @@ public class CustomerController : StandardController
     }
 
     /// <summary>
-    /// 
+    /// Route in charge of registering a customer.
     /// </summary>
-    /// <param name="request"></param>
-    /// <returns></returns>
+    /// <param name="request">Register customer request.</param>
     [HttpPost("customer/registration")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -58,10 +58,9 @@ public class CustomerController : StandardController
     }
 
     /// <summary>
-    /// 
+    /// Route in charge of retrieving customer details information.
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">Customer id.</param>
     [HttpGet("customer/details/{id}")]
     [ProducesResponseType(typeof(GetCustomerDetailsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -79,9 +78,8 @@ public class CustomerController : StandardController
     }
 
     /// <summary>
-    /// 
+    /// Route in charge of retrieving all customers.
     /// </summary>
-    /// <returns></returns>
     [HttpGet("customers")]
     [ProducesResponseType(typeof(IEnumerable<CustomerResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
